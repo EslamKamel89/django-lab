@@ -4,10 +4,12 @@
 from __future__ import annotations
 
 import random
-from datetime import date
+from datetime import date  # type: ignore
 
-from django.http import HttpRequest, HttpResponse, HttpResponseNotFound
+from django.http import (HttpRequest, HttpResponse, HttpResponseNotFound,
+                         HttpResponseRedirect)
 from django.shortcuts import render
+from django.urls import reverse  # type: ignore
 
 # Create your views here.
 
@@ -89,6 +91,20 @@ GOALS : dict[str , list[str]] = {
 }
 def pick_goal(goal_key : str) ->str:
    return random.choice(GOALS[goal_key])
+
+def pick_goal_by_number(goal_index:int)->str :
+    values = list(GOALS.values())
+    return random.choice(values[goal_index])
+def get_month_by_number(goal_index:int)->str :
+    return list(GOALS.keys())[goal_index-1]
+
+def monthly_challenge_by_number(request: HttpRequest , month:int)->HttpResponse:
+    if month <1 or month > len(GOALS):
+        return HttpResponseNotFound("Wrong month number")
+    redirect_path = reverse('month_challenge'  , args=[get_month_by_number(month)])
+    return HttpResponseRedirect(redirect_to=redirect_path)
+
+
 
 def monthly_challenge(request:HttpRequest , month:str)->HttpResponse:
     if month not in GOALS.keys():
