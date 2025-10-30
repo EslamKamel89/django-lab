@@ -6,9 +6,9 @@ from __future__ import annotations
 import random
 from datetime import date  # type: ignore
 
-from django.http import (HttpRequest, HttpResponse, HttpResponseNotFound,
-                         HttpResponseRedirect)
-from django.shortcuts import render
+from django.http import HttpResponseRedirect  # type: ignore
+from django.http import HttpRequest, HttpResponse, HttpResponseNotFound
+from django.shortcuts import redirect, render  # type: ignore
 from django.urls import reverse  # type: ignore
 
 # Create your views here.
@@ -100,13 +100,28 @@ def get_month_by_number(goal_index:int)->str :
 
 def monthly_challenge_by_number(request: HttpRequest , month:int)->HttpResponse:
     if month <1 or month > len(GOALS):
-        return HttpResponseNotFound("Wrong month number")
+        return HttpResponseNotFound("<h2>Wrong month number</h2>")
     redirect_path = reverse('month_challenge'  , args=[get_month_by_number(month)])
-    return HttpResponseRedirect(redirect_to=redirect_path)
-
-
+    return redirect(redirect_path)
 
 def monthly_challenge(request:HttpRequest , month:str)->HttpResponse:
+    month = month.lower()
     if month not in GOALS.keys():
-        return HttpResponseNotFound('Wrong month name')
-    return HttpResponse(pick_goal(month))
+        return HttpResponseNotFound('<h1>Wrong month name</h1>')
+    response_data = f"<h1>{pick_goal(month)}</h1>"
+    return HttpResponse(response_data)
+
+def index(request:HttpRequest):
+    links = ""
+    for month in list(GOALS.keys()) :
+        links = links + f"""
+        <li>
+        <a href="{reverse('month_challenge' , args=[month])}">{month.capitalize()}</a>
+        </li>
+        """
+    body = f"""
+    <ul>
+    {links}
+    </ul>
+    """
+    return HttpResponse(body)
