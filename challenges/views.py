@@ -4,18 +4,16 @@
 from __future__ import annotations
 
 import random
-from datetime import date  # type: ignore
 
-from django.http import HttpResponseRedirect  # type: ignore
 from django.http import HttpRequest, HttpResponse, HttpResponseNotFound
-from django.shortcuts import redirect, render  # type: ignore
-from django.urls import reverse  # type: ignore
+from django.shortcuts import redirect, render
+from django.urls import reverse
 
 # Create your views here.
 
 
 # Month-specific realistic goal pools
-GOALS : dict[str , list[str]] = {
+CHALLENGES : dict[str , list[str]] = {
     "january": [
         "Write a one-page personal strategy for the year and pick 3 priorities.",
         "Declutter your workspace and set up a weekly review routine.",
@@ -89,31 +87,31 @@ GOALS : dict[str , list[str]] = {
         "Set up a clean slate: inbox zero + task list reset."
     ],
 }
-def pick_goal(goal_key : str) ->str:
-   return random.choice(GOALS[goal_key])
+def pick_challenge_by_month(month : str) ->str:
+   return random.choice(CHALLENGES[month])
 
-def pick_goal_by_number(goal_index:int)->str :
-    values = list(GOALS.values())
-    return random.choice(values[goal_index])
-def get_month_by_number(goal_index:int)->str :
-    return list(GOALS.keys())[goal_index-1]
+def pick_challenge_by_month_no(month_number:int)->str :
+    values = list(CHALLENGES.values())
+    return random.choice(values[month_number])
+def get_month_by_number(month_number:int)->str :
+    return list(CHALLENGES.keys())[month_number-1]
 
 def monthly_challenge_by_number(request: HttpRequest , month:int)->HttpResponse:
-    if month <1 or month > len(GOALS):
+    if month <1 or month > len(CHALLENGES):
         return HttpResponseNotFound("<h2>Wrong month number</h2>")
     redirect_path = reverse('month_challenge'  , args=[get_month_by_number(month)])
     return redirect(redirect_path)
 
 def monthly_challenge(request:HttpRequest , month:str)->HttpResponse:
     month = month.lower()
-    if month not in GOALS.keys():
+    if month not in CHALLENGES.keys():
         return HttpResponseNotFound('<h1>Wrong month name</h1>')
-    response_data = f"<h1>{pick_goal(month)}</h1>"
-    return HttpResponse(response_data)
+    challenge_text = pick_challenge_by_month(month)
+    return render(request ,'challenges/challenge.html' , {"month_name" : month.capitalize() , "text" : challenge_text})
 
 def index(request:HttpRequest):
     links = ""
-    for month in list(GOALS.keys()) :
+    for month in list(CHALLENGES.keys()) :
         links = links + f"""
         <li>
         <a href="{reverse('month_challenge' , args=[month])}">{month.capitalize()}</a>
