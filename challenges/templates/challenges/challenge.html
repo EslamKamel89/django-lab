@@ -1,36 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{{ month_name|title }} challenge</title>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css"
-    />
-    <link
-      href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css"
-      rel="stylesheet"
-    />
-  </head>
-  <body>
-    <div
-      class="block w-full p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
-    >
-      <h5
-        class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
-      >
-        This {{ month_name|title }}'s challenge
-      </h5>
-      {% if text is not None %}
-      <p class="font-normal text-gray-700 dark:text-gray-400">{{ text }}</p>
-      {% else %}
-      <p class="font-normal text-red-700 dark:text-red-400">
-        There are no challenges for this month
-      </p>
-      {% endif %}
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
-  </body>
-</html>
+{% extends "layout.html" %}
+<template></template>
+{% block title %} {{ month_name|title }} challenge {% endblock %}
+<template></template>
+{% block content %}
+<div
+  class="block w-full p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
+>
+  <h5
+    class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+  >
+    This {{ month_name|title }}'s challenge
+  </h5>
+  {% if text is not None %}
+  <p class="font-normal text-gray-700 dark:text-gray-400">{{ text }}</p>
+  {% else %}
+  <p class="font-normal text-red-700 dark:text-red-400">
+    There are no challenges for this month
+  </p>
+  {% endif %}
+</div>
+{% endblock%}
