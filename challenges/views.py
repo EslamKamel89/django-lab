@@ -80,14 +80,17 @@ CHALLENGES : dict[str , list[str]] = {
         "Ship a small improvement at work or in your main project.",
         "Donate items you haven’t used in a year."
     ],
-    "december": [
-        "Do a year-in-review and archive your best notes & photos.",
-        "Write thank-you messages to five people who helped you this year.",
-        "Pick a single theme/word for next year.",
-        "Set up a clean slate: inbox zero + task list reset."
-    ],
+    # "december": [
+    #     "Do a year-in-review and archive your best notes & photos.",
+    #     "Write thank-you messages to five people who helped you this year.",
+    #     "Pick a single theme/word for next year.",
+    #     "Set up a clean slate: inbox zero + task list reset."
+    # ],
+    "december" :[]
 }
-def pick_challenge_by_month(month : str) ->str:
+def pick_challenge_by_month(month : str) ->str|None:
+   if len(CHALLENGES[month]) == 0 :
+       return None
    return random.choice(CHALLENGES[month])
 
 def pick_challenge_by_month_no(month_number:int)->str :
@@ -107,19 +110,8 @@ def monthly_challenge(request:HttpRequest , month:str)->HttpResponse:
     if month not in CHALLENGES.keys():
         return HttpResponseNotFound('<h1>Wrong month name</h1>')
     challenge_text = pick_challenge_by_month(month)
-    return render(request ,'challenges/challenge.html' , {"month_name" : month.capitalize() , "text" : challenge_text})
+    return render(request ,'challenges/challenge.html' , {"month_name" : month , "text" : challenge_text})
 
 def index(request:HttpRequest):
-    links = ""
-    for month in list(CHALLENGES.keys()) :
-        links = links + f"""
-        <li>
-        <a href="{reverse('month_challenge' , args=[month])}">{month.capitalize()}</a>
-        </li>
-        """
-    body = f"""
-    <ul>
-    {links}
-    </ul>
-    """
-    return HttpResponse(body)
+    months :list[str] = list(CHALLENGES.keys())
+    return render(request , 'challenges/index.html' , {"months" : months})
