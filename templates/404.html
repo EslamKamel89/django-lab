@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+<template></template>
+{% block title %} 404 Not Found {% endblock %}
+<template></template>
+{% block content %}
+
+<div>
+  <div
+    class="pb-10 bg-gray-900 text-gray-100 min-h-screen flex flex-col items-center justify-center"
+  >
+    <!-- Main Content -->
+    <div class="text-center px-6">
+      <h1 class="text-8xl font-extrabold text-fuchsia-500 drop-shadow-lg">
+        404
+      </h1>
+      <h2 class="mt-4 text-2xl font-semibold text-white">Page Not Found</h2>
+      <p class="mt-3 text-gray-400 max-w-md mx-auto">
+        The page you’re looking for doesn’t exist or may have been moved. Try
+        returning to the challenges or go back to home.
+      </p>
+
+      <!-- Buttons -->
+      <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+        <a
+          href="{% url 'challenges' %}"
+          class="inline-block bg-fuchsia-600 hover:bg-fuchsia-700 text-white font-semibold px-6 py-3 rounded-lg transition"
+        >
+          🏆 Back to Challenges
+        </a>
+        <a
+          href="{% url 'challenges' %}"
+          class="inline-block bg-gray-800 hover:bg-gray-700 text-gray-100 font-semibold px-6 py-3 rounded-lg transition"
+        >
+          ⬅ Go Home
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

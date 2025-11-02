@@ -5,8 +5,10 @@ from __future__ import annotations
 
 import random
 
-from django.http import HttpRequest, HttpResponse, HttpResponseNotFound
+from django.http import (Http404, HttpRequest, HttpResponse,
+                         HttpResponseNotFound)
 from django.shortcuts import redirect, render
+from django.template.loader import render_to_string
 from django.urls import reverse
 
 # Create your views here.
@@ -101,14 +103,14 @@ def get_month_by_number(month_number:int)->str :
 
 def monthly_challenge_by_number(request: HttpRequest , month:int)->HttpResponse:
     if month <1 or month > len(CHALLENGES):
-        return HttpResponseNotFound("<h2>Wrong month number</h2>")
+        raise Http404()
     redirect_path = reverse('month_challenge'  , args=[get_month_by_number(month)])
     return redirect(redirect_path)
 
 def monthly_challenge(request:HttpRequest , month:str)->HttpResponse:
     month = month.lower()
     if month not in CHALLENGES.keys():
-        return HttpResponseNotFound('<h1>Wrong month name</h1>')
+        raise Http404()
     challenge_text = pick_challenge_by_month(month)
     return render(request ,'challenges/challenge.html' , {"month_name" : month , "text" : challenge_text})
 
