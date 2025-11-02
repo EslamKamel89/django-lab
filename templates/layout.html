@@ -1,22 +1,19 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}DjangoLab{% endblock %}</title>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css"
-    />
-    <link
-      href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css"
-      rel="stylesheet"
-    />
+    <link rel="stylesheet" href="{%  static 'css/water.css' %}" />
+    <link href="{% static 'css/flowbite.min.css' %}" rel="stylesheet" />
+    {% block css %}{% endblock %}
   </head>
   <body>
     {% include "./partials/navbar.html"%}
     <template></template>
     <div class="mt-4">{% block content %} {% endblock %}</div>
-    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+    <script src="{% static 'js/flowbite.min.js' %}"></script>
+    {% block js %} {% endblock %}
   </body>
 </html>

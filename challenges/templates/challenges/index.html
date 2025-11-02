@@ -1,5 +1,14 @@
 {% extends "layout.html" %}
 <template></template>
+{% load static %}
+<template></template>
+{% block js %}
+<script src="{% static 'challenges/welcome.js' %}"></script>
+<script>
+  sayHello();
+</script>
+{% endblock %}
+<template></template>
 {% block title %} Challenges {% endblock %}
 <template></template>
 {% block content %}
